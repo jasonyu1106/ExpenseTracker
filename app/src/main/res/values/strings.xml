@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Payment Tracker</string>
+
+    <string name="transactions_page_title">Transactions</string>
+    <string name="overview_page_title">Overview</string>
+    <string name="journal_page_title">Journal</string>
+
+    <string name="purchase">Purchase</string>
+    <string name="paid_on_behalf">Paid on Behalf</string>
+    <string name="paid__for_you">Paid for You</string>
+
+    <string name="recipient">Recipient</string>
+    <string name="borrower">Borrower</string>
+    <string name="lender">Lender</string>
+
+    <string name="category">Category</string>
+    <string name="date">Date</string>
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+
+    <string name="input_title">Add a Transaction</string>
+    <string name="create_button">Create</string>
+
+    <string-array name="categories">
+        <item>Groceries</item>
+        <item>Food/Drinks</item>
+        <item>Apparel</item>
+        <item>Bills</item>
+        <item>Entertainment</item>
+        <item>Transportation</item>
+        <item>Health/Personal Care</item>
+        <item>Home Improvement</item>
+        <item>Other</item>
+    </string-array>
+
+    <string name="date_format">MMM-dd-yyyy</string>
+
+    <string name="remove_option">Remove</string>
+</resources>
