@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<TransactionsFragment.Transaction> transaction;
+    private ArrayList<Transaction> transaction;
     private Context context;
     private LayoutInflater mInflater;
     private static DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-    RecyclerViewAdapter(Context context, ArrayList<TransactionsFragment.Transaction> t){
+    RecyclerViewAdapter(Context context, ArrayList<Transaction> t){
         mInflater = LayoutInflater.from(context);
         transaction = t;
         this.context = context;

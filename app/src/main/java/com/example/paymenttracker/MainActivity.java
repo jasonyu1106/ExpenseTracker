@@ -22,6 +22,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE = 1;
+    public static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public ArrayList getTransactions (){
+        return transactions;
     }
 }

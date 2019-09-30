@@ -2,8 +2,9 @@ package com.example.paymenttracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,19 +13,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.security.acl.Group;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 
-import static com.example.paymenttracker.TransactionsFragment.recyclerViewAdapter;
-import static com.example.paymenttracker.TransactionsFragment.transactions;
+/*import static com.example.paymenttracker.TransactionsFragment.recyclerViewAdapter;
+import static com.example.paymenttracker.TransactionsFragment.transactions;*/
 
 public class InputActivity extends AppCompatActivity {
 
@@ -38,26 +39,22 @@ public class InputActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.transactionRadioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 TextView textViewName = (TextView) findViewById(R.id.textViewName);
-                System.out.println(i);
 
-                switch(i){
-                    case 1:
+                switch (i) {
+                    case R.id.paidOnBehalfRadioButton:
                         textViewName.setText(R.string.borrower);
                         break;
-                    case 2:
+                    case R.id.paidForYouRadioButton:
                         textViewName.setText(R.string.lender);
                         break;
                     default:
                         textViewName.setText(R.string.recipient);
                 }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
@@ -95,22 +92,18 @@ public class InputActivity extends AppCompatActivity {
                    editTextAmount.setError("Required Field");
                }
                else{
-                   TransactionsFragment.Transaction transaction = new TransactionsFragment.Transaction();
-                   try {
-                       transaction.setDate(dateFormat.parse(editDate.getText().toString()));
-                   } catch (ParseException e) {
-                       e.printStackTrace();
+                   Intent send_data = new Intent();
+                   send_data.putExtra("date", editDate.getText().toString());
+                   send_data.putExtra("name", editTextName.getText().toString());
+                   send_data.putExtra("amount", Float.valueOf(editTextAmount.getText().toString()));
+                   send_data.putExtra("description", editTextDescription.getText().toString());
+                   send_data.putExtra("category", spinner.getSelectedItemPosition());
+                   if (radioGroup.getCheckedRadioButtonId() == R.id.paidOnBehalfRadioButton) {
+                       send_data.putExtra("isExpense", false);
+                       System.out.println("LOL GOT EMM");
                    }
-                   transaction.setName(editTextName.getText().toString());
-                   transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
-                   transaction.setDescription(editTextDescription.getText().toString());
-                   transaction.setCategory(spinner.getSelectedItemPosition());
 
-                   transactions.add(transaction);
-                   //TransactionsFragment.recyclerViewAdapter.notifyItemInserted(transactions.size()+1);
-
-                   Collections.sort(transactions);
-                   recyclerViewAdapter.notifyDataSetChanged();
+                   setResult(MainActivity.REQUEST_CODE, send_data);
                    finish();
                }
            }
