@@ -62,6 +62,8 @@ public class InputActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent send_data= new Intent();
+                setResult(MainActivity.RESULT_CANCELLED, send_data);
                 finish();
             }
         });
@@ -103,7 +105,7 @@ public class InputActivity extends AppCompatActivity {
                        System.out.println("LOL GOT EMM");
                    }
 
-                   setResult(MainActivity.REQUEST_CODE, send_data);
+                   setResult(MainActivity.RESULT_OK, send_data);
                    finish();
                }
            }

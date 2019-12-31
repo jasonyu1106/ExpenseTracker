@@ -70,6 +70,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                holder.categoryImageView.setImageResource(R.drawable.home);
                break;
            case 8:
+               holder.categoryImageView.setImageResource(R.drawable.gift);
+               break;
+           case 9:
                holder.categoryImageView.setImageResource(R.drawable.other);
                break;
        }

@@ -46,7 +46,7 @@ public class TransactionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent start_input = new Intent(getActivity(), InputActivity.class);
-                startActivityForResult(start_input, MainActivity.REQUEST_CODE);
+                startActivityForResult(start_input, 1);
             }
         });
         return fragment_view;
@@ -56,8 +56,7 @@ public class TransactionsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MainActivity.REQUEST_CODE){
-
+        if (requestCode == 1 && resultCode == MainActivity.RESULT_OK){
             String name = data.getStringExtra("name");
             float amount = data.getFloatExtra("amount", 0);
             String description = data.getStringExtra("description");

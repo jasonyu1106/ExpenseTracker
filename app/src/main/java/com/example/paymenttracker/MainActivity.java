@@ -22,7 +22,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE = 1;
+    public static final int RESULT_OK = 1;
+    public static final int RESULT_CANCELLED = 0;
     public static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
     @Override
