@@ -24,7 +24,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/recipient"
+            android:text="@string/vendor"
             android:textColor="#25282A"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/categoryImageView"

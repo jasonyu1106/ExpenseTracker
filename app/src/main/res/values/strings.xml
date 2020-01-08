@@ -5,11 +5,11 @@
     <string name="overview_page_title">Overview</string>
     <string name="journal_page_title">Journal</string>
 
-    <string name="purchase">Purchase</string>
+    <!--><string name="purchase">Purchase</string>-->
     <string name="paid_on_behalf">Paid on Behalf</string>
     <string name="paid__for_you">Paid for You</string>
 
-    <string name="recipient">Recipient</string>
+    <string name="vendor">Vendor</string>
     <string name="borrower">Borrower</string>
     <string name="lender">Lender</string>
 
@@ -37,4 +37,8 @@
     <string name="date_format">MMM dd, yyyy</string>
 
     <string name="remove_option">Remove</string>
+
+    <string name="purchase">Personal Purchase</string>
+    <string name="receivable">Receivable</string>
+    <string name="debt">Debt</string>
 </resources>

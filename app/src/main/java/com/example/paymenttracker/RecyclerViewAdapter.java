@@ -34,6 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = mInflater.inflate(R.layout.recyclerview_row, parent, false);
         return new ViewHolder(v);
+        //different layout for debts and receivables (red/green)
     }
 
     @Override

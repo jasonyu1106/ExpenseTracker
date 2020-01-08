@@ -1,28 +1,21 @@
 package com.example.paymenttracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.security.acl.Group;
-import java.text.ParseException;
-import java.util.Calendar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.util.Calendar;
 
 /*import static com.example.paymenttracker.TransactionsFragment.recyclerViewAdapter;
 import static com.example.paymenttracker.TransactionsFragment.transactions;*/
@@ -39,24 +32,38 @@ public class InputActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner);
         spinner.setAdapter(adapter);
 
-        final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.transactionRadioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                TextView textViewName = (TextView) findViewById(R.id.textViewName);
+//        final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.transactionRadioGroup);
+////        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+////            @Override
+////            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+////                TextView textViewName = (TextView) findViewById(R.id.textViewName);
+////
+////                switch (i) {
+////                    case R.id.paidOnBehalfRadioButton:
+////                        textViewName.setText(R.string.borrower);
+////                        break;
+////                    case R.id.paidForYouRadioButton:
+////                        textViewName.setText(R.string.lender);
+////                        break;
+////                    default:
+////                        textViewName.setText(R.string.recipient);
+////                }
+////            }
+////        });
 
-                switch (i) {
-                    case R.id.paidOnBehalfRadioButton:
-                        textViewName.setText(R.string.borrower);
-                        break;
-                    case R.id.paidForYouRadioButton:
-                        textViewName.setText(R.string.lender);
-                        break;
-                    default:
-                        textViewName.setText(R.string.recipient);
-                }
-            }
-        });
+        TextView textViewName = (TextView) findViewById(R.id.textViewName);
+        Intent intent = getIntent();
+        final int type = intent.getIntExtra("type", 0);
+        switch (type){
+            case 1:
+                 textViewName.setText(R.string.borrower);
+                 break;
+            case 2:
+                textViewName.setText(R.string.lender);
+                break;
+            default:
+                textViewName.setText(R.string.vendor);
+        }
 
         ImageButton back_button = (ImageButton) findViewById(R.id.imageButton);
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -100,9 +107,8 @@ public class InputActivity extends AppCompatActivity {
                    send_data.putExtra("amount", Float.valueOf(editTextAmount.getText().toString()));
                    send_data.putExtra("description", editTextDescription.getText().toString());
                    send_data.putExtra("category", spinner.getSelectedItemPosition());
-                   if (radioGroup.getCheckedRadioButtonId() == R.id.paidOnBehalfRadioButton) {
+                   if (type == 1) { //if type is 1, it is a receivable transaction
                        send_data.putExtra("isExpense", false);
-                       System.out.println("LOL GOT EMM");
                    }
 
                    setResult(MainActivity.RESULT_OK, send_data);

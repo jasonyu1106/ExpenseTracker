@@ -3,21 +3,18 @@ package com.example.paymenttracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class TransactionsFragment extends Fragment {
@@ -41,14 +38,51 @@ public class TransactionsFragment extends Fragment {
         dividerItemDecoration.setDrawable(getContext().getResources().getDrawable(R.drawable.recyclerview_divider));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        FloatingActionButton fab = (FloatingActionButton) fragment_view.findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
+//        FloatingActionButton fab = (FloatingActionButton) fragment_view.findViewById(R.id.fab_main);
+//
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent start_input = new Intent(getActivity(), InputActivity.class);
+//                startActivityForResult(start_input, 1);
+//            }
+//        });
+
+        class RequestCode {
+            static final int PURCHASE = 0;
+            static final int RECEIVABLE = 1;
+            static final int DEBT = 2;
+        }
+
+        final Intent transaction_input = new Intent(getActivity(), InputActivity.class);
+
+        FloatingActionButton addPurchase = (FloatingActionButton) fragment_view.findViewById(R.id.fab_purchase);
+            addPurchase.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    transaction_input.putExtra("type", RequestCode.PURCHASE);
+                    startActivityForResult(transaction_input, 1);
+                }
+            });
+        FloatingActionButton addReceivable = (FloatingActionButton) fragment_view.findViewById(R.id.fab_receivable);
+            addReceivable.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    transaction_input.putExtra("type", RequestCode.RECEIVABLE);
+                    startActivityForResult(transaction_input, 1);
+
+                }
+            });
+        FloatingActionButton addDebt = (FloatingActionButton) fragment_view.findViewById(R.id.fab_debt);
+        addDebt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent start_input = new Intent(getActivity(), InputActivity.class);
-                startActivityForResult(start_input, 1);
+                transaction_input.putExtra("type", RequestCode.DEBT);
+                startActivityForResult(transaction_input, 1);
             }
         });
+        //actionB.setVisibility(actionB.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
         return fragment_view;
     }
 
