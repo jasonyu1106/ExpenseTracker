@@ -2,7 +2,8 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F9F6EF"
+    android:id="@+id/cl_interceptor"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="5dp">
@@ -11,8 +12,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="86dp"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        android:paddingBottom="86dp" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/add_transaction"
@@ -20,38 +21,43 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/plus">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_purchase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="mini"
-            app:fab_title="@string/purchase"
-            app:srcCompat="@drawable/plus" />
+        app:fab_addButtonColorNormal="@color/colorPrimary"
+        app:fab_addButtonColorPressed="@color/white_pressed"
+        app:fab_addButtonPlusIconColor="@color/pure_white"
+        app:fab_labelStyle="@style/menu_labels_style">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_receivable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="mini"
-            app:fab_title="@string/receivable"
-            app:srcCompat="@drawable/plus" />
+            app:fab_colorNormal="@color/pure_white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_size="mini"
+            app:fab_title="@string/lend_title"
+            app:fab_icon="@drawable/plus_blue" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_debt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="mini"
-            app:fab_title="@string/debt"
-            app:srcCompat="@drawable/plus" />
+            app:fab_colorNormal="@color/pure_white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_size="mini"
+            app:fab_title="@string/borrow_title"
+            app:fab_icon="@drawable/plus_blue" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_purchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:fab_colorNormal="@color/pure_white"
+            app:fab_colorPressed="@color/white_pressed"
+            app:fab_size="mini"
+            app:fab_title="@string/purchase"
+            app:fab_icon="@drawable/plus_blue" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

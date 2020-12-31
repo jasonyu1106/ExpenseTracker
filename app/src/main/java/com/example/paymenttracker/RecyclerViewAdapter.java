@@ -31,8 +31,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return transaction.get(position).getType();
+    }
+
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = mInflater.inflate(R.layout.recyclerview_row, parent, false);
+        View v;
+        switch (viewType){
+          /*  case TransactionType.RECEIVABLE:
+                //inflate layout for receivable
+                break;
+            case TransactionType.DEBT:
+                //inflate layout for debt
+                break;
+            */
+            default:
+                v = mInflater.inflate(R.layout.recyclerview_row, parent, false);
+        }
         return new ViewHolder(v);
         //different layout for debts and receivables (red/green)
     }

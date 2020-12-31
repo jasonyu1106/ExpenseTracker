@@ -1,6 +1,5 @@
 package com.example.paymenttracker;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +42,8 @@ public class OverviewFragment extends Fragment {
         float categoryTotals[] = new float[9];
 
         for (int i = 0; i < MainActivity.transactions.size(); i++) {
-            if (MainActivity.transactions.get(i).getExpense()) {
+            int type = MainActivity.transactions.get(i).getType();
+            if (type == TransactionType.PURCHASE || type == TransactionType.DEBT) {
                 categoryTotals[MainActivity.transactions.get(i).getCategory()] += MainActivity.transactions.get(i).getAmount();
             }
         }

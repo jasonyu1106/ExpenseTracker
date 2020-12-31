@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +28,6 @@ public class TransactionsFragment extends Fragment {
         // Inflate the layout for this fragment
         final View fragment_view = inflater.inflate(R.layout.fragment_transactions, container, false);
         final RecyclerView recyclerView = (RecyclerView) fragment_view.findViewById(R.id.recyclerView);
-
 
         recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MainActivity.transactions);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -48,19 +48,14 @@ public class TransactionsFragment extends Fragment {
 //            }
 //        });
 
-        class RequestCode {
-            static final int PURCHASE = 0;
-            static final int RECEIVABLE = 1;
-            static final int DEBT = 2;
-        }
-
         final Intent transaction_input = new Intent(getActivity(), InputActivity.class);
-
         FloatingActionButton addPurchase = (FloatingActionButton) fragment_view.findViewById(R.id.fab_purchase);
-            addPurchase.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionsMenu addTransactionMenu = (FloatingActionsMenu) fragment_view.findViewById(R.id.add_transaction);
+        addPurchase.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    transaction_input.putExtra("type", RequestCode.PURCHASE);
+                    transaction_input.putExtra("type", TransactionType.PURCHASE);
+                    addTransactionMenu.collapse();
                     startActivityForResult(transaction_input, 1);
                 }
             });
@@ -68,16 +63,17 @@ public class TransactionsFragment extends Fragment {
             addReceivable.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    transaction_input.putExtra("type", RequestCode.RECEIVABLE);
+                    transaction_input.putExtra("type", TransactionType.RECEIVABLE);
+                    addTransactionMenu.collapse();
                     startActivityForResult(transaction_input, 1);
-
                 }
             });
         FloatingActionButton addDebt = (FloatingActionButton) fragment_view.findViewById(R.id.fab_debt);
         addDebt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                transaction_input.putExtra("type", RequestCode.DEBT);
+                transaction_input.putExtra("type", TransactionType.DEBT);
+                addTransactionMenu.collapse();
                 startActivityForResult(transaction_input, 1);
             }
         });
@@ -96,15 +92,14 @@ public class TransactionsFragment extends Fragment {
             String description = data.getStringExtra("description");
             int category = data.getIntExtra("category", 8);
             String date = data.getStringExtra("date");
-            boolean isExpense = data.getBooleanExtra("isExpense", true);
+            int type = data.getIntExtra("type", TransactionType.PURCHASE);
 
             Transaction transaction = new Transaction();
             transaction.setName(name);
             transaction.setAmount(amount);
             transaction.setDescription(description);
             transaction.setCategory(category);
-            transaction.setExpense(isExpense);
-            System.out.println("THIS BETTER ME F: " + isExpense);
+            transaction.setType(type);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
             try {

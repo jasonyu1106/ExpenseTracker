@@ -3,5 +3,9 @@
     <color name="colorPrimary">#4285F4</color>
     <color name="colorPrimaryDark">#5851DB</color>
     <color name="colorAccent">#4285F4</color>
-    <color name="colorFont">#F9F6EF</color>
+    <color name="pure_white">#FFFFFF</color>
+    <color name="white">#F9F6EF</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="yellow">#FFE681</color>
+    <color name="black_semi_transparent">#B2000000</color>
 </resources>

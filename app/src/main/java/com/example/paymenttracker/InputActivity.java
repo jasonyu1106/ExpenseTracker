@@ -51,17 +51,21 @@ public class InputActivity extends AppCompatActivity {
 ////            }
 ////        });
 
+        TextView textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
         Intent intent = getIntent();
-        final int type = intent.getIntExtra("type", 0);
+        final int type = intent.getIntExtra("type", TransactionType.PURCHASE);
         switch (type){
-            case 1:
-                 textViewName.setText(R.string.borrower);
+            case TransactionType.RECEIVABLE:
+                textViewTitle.setText(R.string.input_lend_title);
+                textViewName.setText(R.string.borrower);
                  break;
-            case 2:
+            case TransactionType.DEBT:
+                textViewTitle.setText(R.string.input_borrow_title);
                 textViewName.setText(R.string.lender);
                 break;
             default:
+                textViewTitle.setText(R.string.input_purchase_title);
                 textViewName.setText(R.string.vendor);
         }
 
@@ -107,9 +111,7 @@ public class InputActivity extends AppCompatActivity {
                    send_data.putExtra("amount", Float.valueOf(editTextAmount.getText().toString()));
                    send_data.putExtra("description", editTextDescription.getText().toString());
                    send_data.putExtra("category", spinner.getSelectedItemPosition());
-                   if (type == 1) { //if type is 1, it is a receivable transaction
-                       send_data.putExtra("isExpense", false);
-                   }
+                   send_data.putExtra("type", type);
 
                    setResult(MainActivity.RESULT_OK, send_data);
                    finish();
