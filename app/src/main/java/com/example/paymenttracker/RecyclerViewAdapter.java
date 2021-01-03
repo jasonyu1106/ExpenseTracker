@@ -24,10 +24,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private LayoutInflater mInflater;
     private static DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-    RecyclerViewAdapter(Context context, ArrayList<Transaction> t){
-        mInflater = LayoutInflater.from(context);
+    public interface onRecyclerViewAdapterListener{
+        void onRemoveTransactionEvent();
+    }
+    private onRecyclerViewAdapterListener mCallback;
+
+    RecyclerViewAdapter(Context activityContext, ArrayList<Transaction> t, onRecyclerViewAdapterListener callback){
+        mInflater = LayoutInflater.from(activityContext);
         transaction = t;
-        this.context = context;
+        this.context = activityContext;
+        mCallback = callback;
     }
 
     @Override
@@ -109,6 +115,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             case R.id.removeMenuItem:
                                 transaction.remove(position);
                                 notifyItemRemoved(position);
+                                mCallback.onRemoveTransactionEvent();
                                 return true;
                             default:
                                 return false;

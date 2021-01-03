@@ -2,6 +2,7 @@ package com.example.paymenttracker;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
     Resources res;
+    private Fragment mTransactionFragment;
+    private Fragment mOverviewFragment;
+    private Fragment mJournalFragment;
 
     public FixedTabsPagerAdapter(Context c, FragmentManager fm) {
         super(fm);
@@ -30,6 +34,23 @@ public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position){
+        Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        // save reference to fragments depending on position
+        switch (position) {
+            case 0:
+                mTransactionFragment = (TransactionsFragment) createdFragment;
+                break;
+            case 1:
+                mOverviewFragment = (OverviewFragment) createdFragment;
+                break;
+            case 2:
+                mJournalFragment = (JournalFragment) createdFragment;
+        }
+        return createdFragment;
+    }
+
+    @Override
     public int getCount(){
         return 3;
     }
@@ -47,4 +68,17 @@ public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
+    public Fragment getTransactionFragment(){
+        return mTransactionFragment;
+    }
+
+    public Fragment getOverviewFragment(){
+        return mOverviewFragment;
+    }
+
+    public Fragment getJournalFragment(){
+        return mJournalFragment;
+    }
 }
+

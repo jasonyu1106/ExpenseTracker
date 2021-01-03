@@ -43,7 +43,7 @@ public class OverviewFragment extends Fragment {
 
         for (int i = 0; i < MainActivity.transactions.size(); i++) {
             int type = MainActivity.transactions.get(i).getType();
-            if (type == TransactionType.PURCHASE || type == TransactionType.DEBT) {
+            if (type == TransactionType.SPEND) {
                 categoryTotals[MainActivity.transactions.get(i).getCategory()] += MainActivity.transactions.get(i).getAmount();
             }
         }

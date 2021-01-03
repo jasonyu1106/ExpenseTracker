@@ -5,9 +5,6 @@
     <string name="overview_page_title">Overview</string>
     <string name="journal_page_title">Journal</string>
 
-    <string name="lend_title">Lending</string>
-    <string name="borrow_title">Borrowing</string>
-
     <string name="vendor">Vendor</string>
     <string name="borrower">Lend To</string>
     <string name="lender">Borrow From</string>
@@ -17,9 +14,8 @@
     <string name="amount">Amount</string>
     <string name="description">Description</string>
 
-    <string name="input_purchase_title">Add Purchase Transaction</string>
+    <string name="input_spend_title">Add Spending Transaction</string>
     <string name="input_lend_title">Add Lending Transaction</string>
-    <string name="input_borrow_title">Add Borrowing Transaction</string>
     <string name="create_button">Create</string>
 
     <string-array name="categories">
@@ -39,7 +35,6 @@
 
     <string name="remove_option">Remove</string>
 
-    <string name="purchase">Purchase</string>
-    <string name="receivable">Receivable</string>
-    <string name="debt">Debt</string>
+    <string name="fab_spend_title">Spend</string>
+    <string name="fab_lend_title">Lend</string>
 </resources>

@@ -54,18 +54,14 @@ public class InputActivity extends AppCompatActivity {
         TextView textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         TextView textViewName = (TextView) findViewById(R.id.textViewName);
         Intent intent = getIntent();
-        final int type = intent.getIntExtra("type", TransactionType.PURCHASE);
+        final int type = intent.getIntExtra("type", TransactionType.SPEND);
         switch (type){
-            case TransactionType.RECEIVABLE:
+            case TransactionType.LEND:
                 textViewTitle.setText(R.string.input_lend_title);
                 textViewName.setText(R.string.borrower);
-                 break;
-            case TransactionType.DEBT:
-                textViewTitle.setText(R.string.input_borrow_title);
-                textViewName.setText(R.string.lender);
                 break;
             default:
-                textViewTitle.setText(R.string.input_purchase_title);
+                textViewTitle.setText(R.string.input_spend_title);
                 textViewName.setText(R.string.vendor);
         }
 

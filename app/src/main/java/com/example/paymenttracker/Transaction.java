@@ -2,14 +2,21 @@ package com.example.paymenttracker;
 
 import java.util.Date;
 
-
 public class Transaction implements Comparable<Transaction>{
     private String name, description;
     private Date date;
     private float amount;
     private int category;
-    private boolean isExpense;
     private int type;
+
+    Transaction(String name, String description, Date date, float amount, int category, int type){
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.amount = amount;
+        this.category = category;
+        this.type = type;
+    }
 
     public void setName(String name){
         this.name = name;
