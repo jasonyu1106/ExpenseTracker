@@ -8,12 +8,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements TransactionsFragment.onTransactionsFragmentListener {
 
     public static final int RESULT_OK = 1;
     public static final int RESULT_CANCELLED = 0;
-    public static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    private float[] categoryTotals = new float[9];
 
     private FixedTabsPagerAdapter pagerAdapter;
 
@@ -30,15 +32,35 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public ArrayList getTransactions (){
-        return transactions;
+    @Override
+    public void onAddTransactionEvent(Transaction transaction) {
+        transactions.add(0, transaction);
+        if (transaction.getType() == TransactionType.SPEND) {
+            categoryTotals[transaction.getCategory()] += transaction.getAmount();
+        }
+        updateOverviewChart(categoryTotals);
+        Collections.sort(transactions);
     }
 
     @Override
-    public void onTransactionModifyEvent() {
+    public void onTransactionModifyEvent(int position, boolean isRemove) {
+        if (isRemove){
+            Transaction removedTransaction = transactions.get(position);
+            categoryTotals[removedTransaction.getCategory()] -= removedTransaction.getAmount();
+            transactions.remove(removedTransaction);
+        }
+        updateOverviewChart(categoryTotals);
+    }
+
+    @Override
+    public ArrayList<Transaction> getTransactions (){
+        return transactions;
+    }
+
+    private void updateOverviewChart(float[] categoryTotals) {
         OverviewFragment overviewFragment = (OverviewFragment) pagerAdapter.getOverviewFragment();
         if (overviewFragment != null) {
-            overviewFragment.updateChart();
+            overviewFragment.updateChart(categoryTotals);
         }
     }
 }

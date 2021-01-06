@@ -18,7 +18,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionsFragment extends Fragment {
@@ -26,17 +26,18 @@ public class TransactionsFragment extends Fragment {
     private RecyclerViewAdapter recyclerViewAdapter;
 
     public interface onTransactionsFragmentListener{
-        void onTransactionModifyEvent();
+        void onAddTransactionEvent(Transaction transaction);
+        void onTransactionModifyEvent(int position, boolean isRemove);
+        ArrayList<Transaction> getTransactions();
     }
     private onTransactionsFragmentListener mActivityCallback;
 
     private RecyclerViewAdapter.onRecyclerViewAdapterListener mFragmentCallback = new onRecyclerViewAdapterListener() {
         @Override
-        public void onRemoveTransactionEvent() {
-            mActivityCallback.onTransactionModifyEvent();
+        public void onRemoveTransactionEvent(int position) {
+            mActivityCallback.onTransactionModifyEvent(position, true);
         }
     };
-
 
     @Override
     public void onAttach(Context context) {
@@ -62,7 +63,7 @@ public class TransactionsFragment extends Fragment {
         final View fragment_view = inflater.inflate(R.layout.fragment_transactions, container, false);
         final RecyclerView recyclerView = (RecyclerView) fragment_view.findViewById(R.id.recyclerView);
 
-        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), MainActivity.transactions, mFragmentCallback);
+        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(), mActivityCallback.getTransactions(), mFragmentCallback);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -128,9 +129,8 @@ public class TransactionsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            Transaction transaction = new Transaction(name, description, formattedDate, amount, category, type);
-            MainActivity.transactions.add(transaction);
-            Collections.sort(MainActivity.transactions);
+            Transaction newTransaction = new Transaction(name, description, formattedDate, amount, category, type);
+            mActivityCallback.onAddTransactionEvent(newTransaction);
             recyclerViewAdapter.notifyDataSetChanged();
         }
     }

@@ -31,29 +31,16 @@ public class OverviewFragment extends Fragment {
         return fragment_view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateChart();
-    }
+    public void updateChart (float[] data){
+        ArrayList<PieEntry> pieEntries = new ArrayList<>(9);
 
-    public void updateChart () {
-        ArrayList<PieEntry> data = new ArrayList<>(9);
-        float categoryTotals[] = new float[9];
-
-        for (int i = 0; i < MainActivity.transactions.size(); i++) {
-            int type = MainActivity.transactions.get(i).getType();
-            if (type == TransactionType.SPEND) {
-                categoryTotals[MainActivity.transactions.get(i).getCategory()] += MainActivity.transactions.get(i).getAmount();
-            }
-        }
-        for (int j = 0; j < categoryTotals.length; j++) {
-            if (categoryTotals[j] != 0) {
-                data.add(new PieEntry(categoryTotals[j], getResources().getStringArray(R.array.categories)[j]));
+        for (int i = 0; i < data.length; i++){
+            if (data[i] != 0) {
+                pieEntries.add(new PieEntry(data[i], getResources().getStringArray(R.array.categories)[i]));
             }
         }
 
-        PieDataSet dataSet = new PieDataSet(data, "Transaction Breakdown");
+        PieDataSet dataSet = new PieDataSet(pieEntries, "Transaction Breakdown");
         dataSet.setSliceSpace(3f);
 
         ArrayList<Integer> colors = new ArrayList<>();
@@ -83,5 +70,7 @@ public class OverviewFragment extends Fragment {
         // pieData.setValueTextColor(Color.WHITE);
 
         pieChart.setData(pieData);
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
     }
 }

@@ -19,26 +19,26 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<Transaction> transaction;
+    private ArrayList<Transaction> transactions;
     private Context context;
     private LayoutInflater mInflater;
     private static DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     public interface onRecyclerViewAdapterListener{
-        void onRemoveTransactionEvent();
+        void onRemoveTransactionEvent(int position);
     }
     private onRecyclerViewAdapterListener mCallback;
 
     RecyclerViewAdapter(Context activityContext, ArrayList<Transaction> t, onRecyclerViewAdapterListener callback){
         mInflater = LayoutInflater.from(activityContext);
-        transaction = t;
+        transactions = t;
         this.context = activityContext;
         mCallback = callback;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return transaction.get(position).getType();
+        return transactions.get(position).getType();
     }
 
     @Override
@@ -62,12 +62,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(holder.itemView.getResources().getString(R.string.date_format));
-        holder.recipientTextView.setText(transaction.get(position).getRecipient());
-        holder.amountTextView.setText(decimalFormat.format(transaction.get(position).getAmount()));
-        holder.dateTextView.setText(dateFormat.format(transaction.get(position).getDate()));
-        holder.descriptionTextView.setText(transaction.get(position).getDescription());
+        holder.recipientTextView.setText(transactions.get(position).getRecipient());
+        holder.amountTextView.setText(decimalFormat.format(transactions.get(position).getAmount()));
+        holder.dateTextView.setText(dateFormat.format(transactions.get(position).getDate()));
+        holder.descriptionTextView.setText(transactions.get(position).getDescription());
 
-       switch (transaction.get(position).getCategory()){
+       switch (transactions.get(position).getCategory()){
            case 0:
                holder.categoryImageView.setImageResource(R.drawable.groceries);
                break;
@@ -113,9 +113,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.removeMenuItem:
-                                transaction.remove(position);
                                 notifyItemRemoved(position);
-                                mCallback.onRemoveTransactionEvent();
+                                mCallback.onRemoveTransactionEvent(position);
                                 return true;
                             default:
                                 return false;
@@ -128,7 +127,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return transaction.size();
+        return transactions.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -147,7 +146,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextView);
             moreImageButton = (ImageButton) view.findViewById(R.id.moreImageButton);
             categoryImageView = (ImageView) view.findViewById(R.id.categoryImageView);
-
         }
     }
 
