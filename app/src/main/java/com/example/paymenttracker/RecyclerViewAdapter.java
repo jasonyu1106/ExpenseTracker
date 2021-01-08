@@ -25,7 +25,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     public interface onRecyclerViewAdapterListener{
-        void onRemoveTransactionEvent(int position);
+        void removeTransactionRequest(int position);
+        void modifyTransactionRequest(int position);
     }
     private onRecyclerViewAdapterListener mCallback;
 
@@ -105,20 +106,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(context, view);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
-                menuInflater.inflate(R.menu.remove, popupMenu.getMenu());
+                menuInflater.inflate(R.menu.popupmenu, popupMenu.getMenu());
                 popupMenu.show();
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
+                            case R.id.editMenuItem:
+
+                                mCallback.modifyTransactionRequest(position);
+                                break;
                             case R.id.removeMenuItem:
+                                mCallback.removeTransactionRequest(position);
                                 notifyItemRemoved(position);
-                                mCallback.onRemoveTransactionEvent(position);
-                                return true;
+                                break;
                             default:
                                 return false;
                         }
+                        return true;
                     }
                 });
             }

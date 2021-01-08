@@ -33,23 +33,38 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
     }
 
     @Override
-    public void onAddTransactionEvent(Transaction transaction) {
-        transactions.add(0, transaction);
-        if (transaction.getType() == TransactionType.SPEND) {
-            categoryTotals[transaction.getCategory()] += transaction.getAmount();
+    public void onAddTransactionEvent(Transaction newTransaction) {
+        transactions.add(0, newTransaction);
+        if (newTransaction.getType() == TransactionType.SPEND) {
+            categoryTotals[newTransaction.getCategory()] += newTransaction.getAmount();
         }
         updateOverviewChart(categoryTotals);
         Collections.sort(transactions);
     }
 
     @Override
-    public void onTransactionModifyEvent(int position, boolean isRemove) {
-        if (isRemove){
-            Transaction removedTransaction = transactions.get(position);
-            categoryTotals[removedTransaction.getCategory()] -= removedTransaction.getAmount();
-            transactions.remove(removedTransaction);
-        }
+    public void onRemoveTransactionEvent(int position) {
+        Transaction removedTransaction = transactions.get(position);
+        categoryTotals[removedTransaction.getCategory()] -= removedTransaction.getAmount();
+        transactions.remove(removedTransaction);
         updateOverviewChart(categoryTotals);
+    }
+
+    @Override
+    public void onModifyTransactionEvent(int position, Transaction modifiedTransaction) {
+        Transaction transactionToModify = transactions.get(position);
+        if (modifiedTransaction.getType() == TransactionType.SPEND) {
+            categoryTotals[transactionToModify.getCategory()] -= transactionToModify.getAmount();
+            categoryTotals[modifiedTransaction.getCategory()] += modifiedTransaction.getAmount();
+        }
+        transactions.set(position, modifiedTransaction);
+        updateOverviewChart(categoryTotals);
+        Collections.sort(transactions);
+    }
+
+    @Override
+    public Transaction getTransactionData(int position) {
+        return transactions.get(position);
     }
 
     @Override

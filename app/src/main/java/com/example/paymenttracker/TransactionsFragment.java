@@ -23,19 +23,44 @@ import java.util.Date;
 
 public class TransactionsFragment extends Fragment {
 
+    class RequestCode {
+        static final int ADD = 100;
+        static final int MODIFY = 101;
+    }
+
     private RecyclerViewAdapter recyclerViewAdapter;
 
     public interface onTransactionsFragmentListener{
         void onAddTransactionEvent(Transaction transaction);
-        void onTransactionModifyEvent(int position, boolean isRemove);
+        void onRemoveTransactionEvent(int position);
+        void onModifyTransactionEvent(int position, Transaction modifiedTransaction);
+        Transaction getTransactionData(int position);
         ArrayList<Transaction> getTransactions();
     }
     private onTransactionsFragmentListener mActivityCallback;
 
     private RecyclerViewAdapter.onRecyclerViewAdapterListener mFragmentCallback = new onRecyclerViewAdapterListener() {
         @Override
-        public void onRemoveTransactionEvent(int position) {
-            mActivityCallback.onTransactionModifyEvent(position, true);
+        public void removeTransactionRequest(int position) {
+            mActivityCallback.onRemoveTransactionEvent(position);
+        }
+
+        @Override
+        public void modifyTransactionRequest(int position) {
+            Transaction currentTransaction = mActivityCallback.getTransactionData(position);
+
+            Intent transaction_modify = new Intent(getActivity(), InputActivity.class);
+            final SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
+            transaction_modify.putExtra("existing", true);
+            transaction_modify.putExtra("position", position);
+            transaction_modify.putExtra("date", dateFormat.format(currentTransaction.getDate()));
+            transaction_modify.putExtra("name", currentTransaction.getRecipient());
+            transaction_modify.putExtra("amount", currentTransaction.getAmount());
+            transaction_modify.putExtra("description", currentTransaction.getDescription());
+            transaction_modify.putExtra("category", currentTransaction.getCategory());
+            transaction_modify.putExtra("type", currentTransaction.getType());
+
+            startActivityForResult(transaction_modify, RequestCode.MODIFY);
         }
     };
 
@@ -90,7 +115,7 @@ public class TransactionsFragment extends Fragment {
                 public void onClick(View view) {
                     transaction_input.putExtra("type", TransactionType.SPEND);
                     addTransactionMenu.collapse();
-                    startActivityForResult(transaction_input, 1);
+                    startActivityForResult(transaction_input, RequestCode.ADD);
                 }
             });
         FloatingActionButton addReceivable = (FloatingActionButton) fragment_view.findViewById(R.id.fab_lend);
@@ -99,7 +124,7 @@ public class TransactionsFragment extends Fragment {
                 public void onClick(View view) {
                     transaction_input.putExtra("type", TransactionType.LEND);
                     addTransactionMenu.collapse();
-                    startActivityForResult(transaction_input, 1);
+                    startActivityForResult(transaction_input, RequestCode.ADD);
                 }
             });
 
@@ -111,14 +136,15 @@ public class TransactionsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == MainActivity.RESULT_OK){
+        //call mActivityCallback.onModifyTransactionEvent(position, transaction) on RequestCode.MODIFY, RESULT_OK
+        if (resultCode == MainActivity.RESULT_OK){
             String name = data.getStringExtra("name");
             float amount = data.getFloatExtra("amount", 0);
             String description = data.getStringExtra("description");
             int category = data.getIntExtra("category", 8);
             String date = data.getStringExtra("date");
             int type = data.getIntExtra("type", TransactionType.SPEND);
+            int position = data.getIntExtra("position", 0);
 
             Date formattedDate;
             SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));
@@ -129,8 +155,17 @@ public class TransactionsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            Transaction newTransaction = new Transaction(name, description, formattedDate, amount, category, type);
-            mActivityCallback.onAddTransactionEvent(newTransaction);
+            switch(requestCode){
+                case RequestCode.ADD:
+                    Transaction newTransaction = new Transaction(name, description, formattedDate, amount, category, type);
+                    mActivityCallback.onAddTransactionEvent(newTransaction);
+                    break;
+                case RequestCode.MODIFY:
+                    Transaction modifiedTransaction = new Transaction(name, description, formattedDate, amount, category, type);
+                    mActivityCallback.onModifyTransactionEvent(position, modifiedTransaction);
+                    break;
+            }
+
             recyclerViewAdapter.notifyDataSetChanged();
         }
     }

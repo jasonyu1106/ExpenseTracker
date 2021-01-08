@@ -16,7 +16,8 @@
 
     <string name="input_spend_title">Add Spending Transaction</string>
     <string name="input_lend_title">Add Lending Transaction</string>
-    <string name="create_button">Create</string>
+    <string name="input_create_button">Create</string>
+    <string name="input_modify_button">Save Changes</string>
 
     <string-array name="categories">
         <item>Groceries</item>
@@ -33,6 +34,7 @@
 
     <string name="date_format">MMM dd, yyyy</string>
 
+    <string name="edit_option">Edit</string>
     <string name="remove_option">Remove</string>
 
     <string name="fab_spend_title">Spend</string>
