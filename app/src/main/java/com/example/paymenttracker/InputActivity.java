@@ -121,7 +121,7 @@ public class InputActivity extends AppCompatActivity {
                         Intent send_data = new Intent();
                         send_data.putExtra("date", editDate.getText().toString());
                         send_data.putExtra("name", editTextName.getText().toString());
-                        send_data.putExtra("amount", Float.valueOf(editTextAmount.getText().toString()));
+                        send_data.putExtra("amount", editTextAmount.getText().toString());
                         send_data.putExtra("description", editTextDescription.getText().toString());
                         send_data.putExtra("category", spinner.getSelectedItemPosition());
                         send_data.putExtra("type", type);

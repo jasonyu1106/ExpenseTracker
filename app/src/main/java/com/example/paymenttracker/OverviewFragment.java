@@ -1,6 +1,7 @@
 package com.example.paymenttracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,10 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 
@@ -31,12 +33,12 @@ public class OverviewFragment extends Fragment {
         return fragment_view;
     }
 
-    public void updateChart (float[] data){
+    public void updateChart (BigDecimal[] data){
         ArrayList<PieEntry> pieEntries = new ArrayList<>(9);
 
         for (int i = 0; i < data.length; i++){
-            if (data[i] != 0) {
-                pieEntries.add(new PieEntry(data[i], getResources().getStringArray(R.array.categories)[i]));
+            if (data[i].compareTo(BigDecimal.ZERO) != 0) {
+                pieEntries.add(new PieEntry(Float.parseFloat(data[i].toPlainString()), getResources().getStringArray(R.array.categories)[i]));
             }
         }
 
@@ -65,7 +67,12 @@ public class OverviewFragment extends Fragment {
 
         PieData pieData = new PieData(dataSet);
 
-        pieData.setValueFormatter(new PercentFormatter(pieChart));
+        pieData.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value){
+                return "$" + value;
+            }
+        });
         pieData.setValueTextSize(11f);
         // pieData.setValueTextColor(Color.WHITE);
 

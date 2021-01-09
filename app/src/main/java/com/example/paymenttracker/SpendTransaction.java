@@ -1,12 +1,13 @@
 package com.example.paymenttracker;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SpendTransaction extends Transaction {
     private boolean isOwed;
     private String owedName;
 
-    SpendTransaction(String name, String description, Date date, float amount, int category,
+    SpendTransaction(String name, String description, Date date, BigDecimal amount, int category,
                      int type, boolean isOwed, String owedName) {
         super(name, description, date, amount, category, type);
         this.isOwed = isOwed;

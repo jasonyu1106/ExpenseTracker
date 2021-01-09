@@ -114,7 +114,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.editMenuItem:
-
                                 mCallback.modifyTransactionRequest(position);
                                 break;
                             case R.id.removeMenuItem:

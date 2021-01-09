@@ -16,6 +16,7 @@ import com.example.paymenttracker.RecyclerViewAdapter.onRecyclerViewAdapterListe
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class TransactionsFragment extends Fragment {
             transaction_modify.putExtra("position", position);
             transaction_modify.putExtra("date", dateFormat.format(currentTransaction.getDate()));
             transaction_modify.putExtra("name", currentTransaction.getRecipient());
-            transaction_modify.putExtra("amount", currentTransaction.getAmount());
+            transaction_modify.putExtra("amount", currentTransaction.getAmount().toString());
             transaction_modify.putExtra("description", currentTransaction.getDescription());
             transaction_modify.putExtra("category", currentTransaction.getCategory());
             transaction_modify.putExtra("type", currentTransaction.getType());
@@ -139,12 +140,14 @@ public class TransactionsFragment extends Fragment {
         //call mActivityCallback.onModifyTransactionEvent(position, transaction) on RequestCode.MODIFY, RESULT_OK
         if (resultCode == MainActivity.RESULT_OK){
             String name = data.getStringExtra("name");
-            float amount = data.getFloatExtra("amount", 0);
+            String stringAmount = data.getStringExtra("amount");
             String description = data.getStringExtra("description");
             int category = data.getIntExtra("category", 8);
             String date = data.getStringExtra("date");
             int type = data.getIntExtra("type", TransactionType.SPEND);
             int position = data.getIntExtra("position", 0);
+
+            BigDecimal amount = new BigDecimal(stringAmount);
 
             Date formattedDate;
             SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.date_format));

@@ -7,15 +7,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements TransactionsFragment.onTransactionsFragmentListener {
-
     public static final int RESULT_OK = 1;
     public static final int RESULT_CANCELLED = 0;
     private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-    private float[] categoryTotals = new float[9];
+    private BigDecimal[] categoryTotals = new BigDecimal[9];
 
     private FixedTabsPagerAdapter pagerAdapter;
 
@@ -30,13 +31,16 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+
+        Arrays.fill(categoryTotals, BigDecimal.ZERO);
     }
 
     @Override
     public void onAddTransactionEvent(Transaction newTransaction) {
         transactions.add(0, newTransaction);
         if (newTransaction.getType() == TransactionType.SPEND) {
-            categoryTotals[newTransaction.getCategory()] += newTransaction.getAmount();
+            categoryTotals[newTransaction.getCategory()]
+                    = categoryTotals[newTransaction.getCategory()].add(newTransaction.getAmount());
         }
         updateOverviewChart(categoryTotals);
         Collections.sort(transactions);
@@ -45,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
     @Override
     public void onRemoveTransactionEvent(int position) {
         Transaction removedTransaction = transactions.get(position);
-        categoryTotals[removedTransaction.getCategory()] -= removedTransaction.getAmount();
+        categoryTotals[removedTransaction.getCategory()]
+                = categoryTotals[removedTransaction.getCategory()].subtract(removedTransaction.getAmount());
         transactions.remove(removedTransaction);
         updateOverviewChart(categoryTotals);
     }
@@ -54,8 +59,10 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
     public void onModifyTransactionEvent(int position, Transaction modifiedTransaction) {
         Transaction transactionToModify = transactions.get(position);
         if (modifiedTransaction.getType() == TransactionType.SPEND) {
-            categoryTotals[transactionToModify.getCategory()] -= transactionToModify.getAmount();
-            categoryTotals[modifiedTransaction.getCategory()] += modifiedTransaction.getAmount();
+            categoryTotals[transactionToModify.getCategory()]
+                    = categoryTotals[transactionToModify.getCategory()].subtract(transactionToModify.getAmount());
+            categoryTotals[modifiedTransaction.getCategory()]
+                    = categoryTotals[modifiedTransaction.getCategory()].subtract(modifiedTransaction.getAmount());
         }
         transactions.set(position, modifiedTransaction);
         updateOverviewChart(categoryTotals);
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
         return transactions;
     }
 
-    private void updateOverviewChart(float[] categoryTotals) {
+    private void updateOverviewChart(BigDecimal[] categoryTotals) {
         OverviewFragment overviewFragment = (OverviewFragment) pagerAdapter.getOverviewFragment();
         if (overviewFragment != null) {
             overviewFragment.updateChart(categoryTotals);

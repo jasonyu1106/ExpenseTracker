@@ -213,7 +213,7 @@
             android:inputType="textPersonName"
             android:gravity="end"
             android:paddingRight="10dp"
-            android:maxLength="12"/>
+            android:maxLength="15"/>
     </LinearLayout>
 
     <Button
