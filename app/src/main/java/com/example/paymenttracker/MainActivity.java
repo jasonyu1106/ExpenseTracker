@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements TransactionsFragm
             categoryTotals[transactionToModify.getCategory()]
                     = categoryTotals[transactionToModify.getCategory()].subtract(transactionToModify.getAmount());
             categoryTotals[modifiedTransaction.getCategory()]
-                    = categoryTotals[modifiedTransaction.getCategory()].subtract(modifiedTransaction.getAmount());
+                    = categoryTotals[modifiedTransaction.getCategory()].add(modifiedTransaction.getAmount());
         }
         transactions.set(position, modifiedTransaction);
         updateOverviewChart(categoryTotals);

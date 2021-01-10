@@ -1,5 +1,6 @@
 package com.example.paymenttracker;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class OverviewFragment extends Fragment {
@@ -35,12 +37,16 @@ public class OverviewFragment extends Fragment {
 
     public void updateChart (BigDecimal[] data){
         ArrayList<PieEntry> pieEntries = new ArrayList<>(9);
+        BigDecimal totalCounter = BigDecimal.ZERO;
 
         for (int i = 0; i < data.length; i++){
             if (data[i].compareTo(BigDecimal.ZERO) != 0) {
                 pieEntries.add(new PieEntry(Float.parseFloat(data[i].toPlainString()), getResources().getStringArray(R.array.categories)[i]));
+                totalCounter = totalCounter.add(data[i]);
             }
         }
+
+        final float totalAmount = Float.parseFloat(totalCounter.toPlainString());
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Transaction Breakdown");
         dataSet.setSliceSpace(3f);
@@ -70,10 +76,15 @@ public class OverviewFragment extends Fragment {
         pieData.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value){
-                return "$" + value;
+                return "$" + String.format(Locale.US,"%.2f", value) + " (" + Math.round((value/totalAmount)*100) + "%)";
             }
         });
         pieData.setValueTextSize(11f);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setHoleRadius(45f);
+        pieChart.setTransparentCircleRadius(50f);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.getDescription().setEnabled(false);
         // pieData.setValueTextColor(Color.WHITE);
 
         pieChart.setData(pieData);

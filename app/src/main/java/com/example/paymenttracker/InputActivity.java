@@ -98,7 +98,7 @@ public class InputActivity extends AppCompatActivity {
             if(loadExistingTransaction) {
                 editDate.setText(extras.getString("date"));
                 editTextName.setText(extras.getString("name"));
-                editTextAmount.setText(String.format(java.util.Locale.US,"%.2f", extras.getFloat("amount")));
+                editTextAmount.setText(extras.getString("amount"));
                 editTextDescription.setText(extras.getString("description"));
                 spinner.setSelection(extras.getInt("category"));
                 finishButton.setText(R.string.input_modify_button);
